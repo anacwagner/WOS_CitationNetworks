@@ -2,7 +2,7 @@
 
 Extração dos dados do WoS para montar uma rede de citações.
 
-**OBS:** Os códigos foram feitos para serem rodados em uma VM com acesso à rede da FGV. Uma outra opção seria fazer isso de fora utilizando meu login de aluna, mas daria um pouco mais de trabalho. Outros links de acesso também podem ser utilizados, para isso basta alterar o `APPS` e a função `login` do arquivo [`wos.py`](https://github.com/anacwagner/WOS/blob/master/wos.py).
+**OBS:** Os códigos foram feitos para serem rodados em uma VM com acesso à rede da FGV. Uma outra opção seria fazer isso de fora utilizando meu login de aluna, mas daria um pouco mais de trabalho. Outros links de acesso também podem ser utilizados, para isso basta alterar o `APPS` e a função `login` do arquivo [`wos.py`](https://github.com/anacwagner/WOS_CitationNetworks/blob/master/wos.py).
 
 ## Passo a Passo da Extração dos Dados
 
@@ -11,8 +11,8 @@ Extração dos dados do WoS para montar uma rede de citações.
 3. Escolher uma categoria para montar a rede de citações (foi escolhida a `Mathematical & Computational Biology`).
 4. Lista todos os *journals* desta categoria (foram selecionados somente os anos de `2010` a `2017`);
 5. Para cada *journal*:
-		i) Ir na página inicial e fazer uma `Advanced Search`. Digitar no campo de busca informações sobre o título (**SO** - `Publication Name`), anos a serem considerados (**PY** - `Year Published`) e o tipo de documento (**DT** - `Document Type`), no caso, artigo. 
-		ii) Para cada artigo da lista gerada, listar todos os artigos citados, assim como informações relevantes para a construção da rede e possíveis consultas futura. 
+		(i) Ir na página inicial e fazer uma `Advanced Search`. Digitar no campo de busca informações sobre o título (**SO** - `Publication Name`), anos a serem considerados (**PY** - `Year Published`) e o tipo de documento (**DT** - `Document Type`), no caso, artigo. 
+		(ii) Para cada artigo da lista gerada, listar todos os artigos citados, assim como informações relevantes para a construção da rede e possíveis consultas futura. 
 
 ## Instalações Requeridas
 
@@ -29,7 +29,7 @@ O Web Scraping do WoS foi feito utilizando [`Python 3`](https://www.python.org/d
 
 Para utilizar o Selenium, é necessário de uma API [WebDriver](http://www.seleniumhq.org/projects/webdriver/), como por exemplo, o [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) (uma implementação que controla um navegador Chrome executado na máquina local) ou [PhantomJs](http://phantomjs.org/download.html). Foi utilizada a primeira opção. 
 
-## Versão Teste x Versão Total
+## Versão [Teste](https://github.com/anacwagner/WOS_CitationNetworks/tree/master/Teste) x Versão Total
 
 Ao tentar executar a versão teste para todos os **50.223 artigos** extraídos a partir das publicações dos **59 journals** entre os **anos de 2010 e 2017** pertencentes a categoria selecionada, alguns erros ocorreram e houve a necessidade de alterações em algumas funções. 
 
@@ -41,5 +41,6 @@ As funções que sofreram alterações foram: `allArticles`, `extractInfo` e `al
 
 Além disso, as bases com as informações sobre as citações foram alteradas. Houve a necessidade de mudar os índices dos artigos e periódicos armazenados. Em vez de usar um sequencial numérico, os artigos passaram a utilizar como índice o código do próprio WoS e os periódicos, o ISSN. Dessa forma, a etapa de montagem da rede de citações pode ser dividida. 
 
-## *Outputs*
+## [*Outputs*](https://github.com/anacwagner/WOS_CitationNetworks/tree/master/outputs)
+
 
