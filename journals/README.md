@@ -1,0 +1,3 @@
+Arquivos em *json* com informações (Título, Total de Citações, FI, *eigenfactor*, etc.) dos periódicos de cada ano da categoria escolhida ([*Mathematical & Computational Biology*](http://jcr-incites-thomsonreuters.ez91.periodicos.capes.gov.br/JCRCategoryProfileAction.action?year=2016&categoryName=MATHEMATICAL%20%26%20COMPUTATIONAL%20BIOLOGY&edition=SCIE&category=MC)). As informação disponíveis vão de 2006 a 2016, mas foram coletados apenas os dados a partir de 2010. 
+
+Temos um total de **59 periódicos** e para cada um deles foram extraídas informações de todos os artigos que publicaram entre os anos de 2010 a 2017. 
