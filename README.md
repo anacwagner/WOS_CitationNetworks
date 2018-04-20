@@ -29,18 +29,16 @@ O Web Scraping do WoS foi feito utilizando [`Python 3`](https://www.python.org/d
 
 Para utilizar o Selenium, é necessário de uma API [WebDriver](http://www.seleniumhq.org/projects/webdriver/), como por exemplo, o [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) (uma implementação que controla um navegador Chrome executado na máquina local) ou [PhantomJs](http://phantomjs.org/download.html). Foi utilizada a primeira opção. 
 
-## Versão [Teste](https://github.com/anacwagner/WOS_CitationNetworks/tree/master/Teste) x Versão Total
+## Observações
 
-Ao tentar executar a versão teste para todos os **50.223 artigos** extraídos a partir das publicações dos **59 journals** entre os **anos de 2010 e 2017** pertencentes a categoria selecionada, alguns erros ocorreram e houve a necessidade de alterações em algumas funções. 
+* Para cada um dos **59 periódicos** da categoria selecionada, foram extraídos **50.223 artigos** publicados entre os **anos de 2010 a 2017**. Para cada um desses artigos, foram extraídos os artigos citados por cada um, totalizando umas **1.646.674 citações**.
 
-A primeira observação feita é que o WoS tem um limite de links a serem acessados. Dessa forma, houve a necessidade de realizar as buscas em partes de modo que ao atingir o limite, o Google Drive fechasse e reiniciasse o processo continuando de onde parou. Sendo assim, novos parâmetros e novas variáveis foram inseridas.
 
-Outra ponto observado foi que ao reabrir o Google Drive, os links salvos ficam quebrados. Na verdade, eles estão associados aos resultados da `Advanced Search` já realizada anteriormente. Dessa forma, sempre que reiniciamos o processo, há a necessidade de refazer essa busca avançada. Outro ponto observado foi que como a busca envolve 59 periódicos, não tem como armazenar os resultados pela opção oferecida pelo próprio WoS, pois o limite é de 40 buscas. 
+* A primeira observação feita é que o WoS tem um limite de tempo. Dessa forma, houve a necessidade de realizar as buscas em partes de modo que ao atingir o limite, o Google Drive fechasse e reiniciasse o processo continuando de onde parou.
 
-As funções que sofreram alterações foram: `allArticles`, `extractInfo` e `allCitations`. 
 
-Além disso, as bases com as informações sobre as citações foram alteradas. Houve a necessidade de mudar os índices dos artigos e periódicos armazenados. Em vez de usar um sequencial numérico, os artigos passaram a utilizar como índice o código do próprio WoS e os periódicos, o ISSN. Dessa forma, a etapa de montagem da rede de citações pode ser dividida. 
+* Outra ponto observado foi que ao reabrir o Google Drive, os links salvos ficam perdidos. Na verdade, eles estão associados aos resultados da `Advanced Search` já realizada anteriormente. Dessa forma, sempre que reiniciamos o processo, há a necessidade de refazer essa busca avançada. 
 
-## [*Outputs*](https://github.com/anacwagner/WOS_CitationNetworks/tree/master/outputs)
 
+* Além disso, observou-se que como a busca envolve 59 periódicos, não tem como armazenar os resultados pela opção oferecida pelo próprio WoS, pois o limite é de 40 buscas. 
 
