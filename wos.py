@@ -72,7 +72,7 @@ def advancedSearch(journals, year_list):
 		search.send_keys('SO = (' + journals.TITLE[i] + ')' + ' AND PY = (' + year_from + '-' + year_to +') AND DT = (Article)')
 
 
-		button = driver.find_element_by_xpath('//*[@id="searchButton"]/input')
+		button = driver.find_element_by_xpath('//*[@id="search-button"]')
 		button.click()
 		time.sleep(3)
 
@@ -233,6 +233,7 @@ def extractInfo(articles, ID_A_START):
 	return articles
 
 
+
 def allCitations(articles, journals, ID_A_START, articles_cit, journals_cit, citations):
 	'''
 		INPUT:
@@ -256,7 +257,7 @@ def allCitations(articles, journals, ID_A_START, articles_cit, journals_cit, cit
 	ID_J_CIT = len(journals_cit)
 	ID_A_CIT = len(articles_cit)
 
-	limit = 500
+	limit = 200
 	l = 1
 
 	for articleSource_id in range(ID_A_START, ID_A_INIC+ID_A):
@@ -268,71 +269,143 @@ def allCitations(articles, journals, ID_A_START, articles_cit, journals_cit, cit
 
 		if link_cit == '0': continue
 
-		while l < limit:
 
-			driver.get(link_cit)
-			pages = int(driver.find_element_by_xpath('//*[@id="pageCount.top"]').text)
-			k = 0
+		driver.get(link_cit)
+		pages = int(driver.find_element_by_xpath('//*[@id="pageCount.top"]').text)
+		cit_total = int(driver.find_element_by_xpath('//*[@id="hitCount.top"]').text)
 
-			if l + pages + 1> limit: 
-				l = limit
-				break
+		count = 0
+		k = 0
 
-			for page in range(1, pages+1):
-				soup = BeautifulSoup(driver.page_source, 'lxml')
-				all_div = soup.find_all('div', class_ = 'search-results-item')
-				#all_div = all_div[0:int(len(all_div)/2)] # os resultados aparecem em duplicatas nas páginas
-
-				for div in all_div:
-					k = k + 1
-					article_title = div.find('a', class_ = 'smallV110')
-					#article_title = div.find('span', class_ = 'reference-title')
-
-					if article_title != None and article_title['href'] != 'javascript:;' and article_title.text[:21] != ' (Visualizar registro': # existem alguns artigos sem links
-						journal_ISSN = div.find('p', class_ = 'FR_field sameLine')
-						if journal_ISSN == None: continue
-
-						journal_ISSN = journal_ISSN.value.text
-						article_WOS = article_title['href'].split('WOS:')[-1].split('&')[0]
-						article_title = article_title.value.text
-						year = int(div.find_all('span', class_ = 'data_bold')[-1].value.text[-4:]) 
-						journal_title = div.find('span', id = 'show_journal_overlay_link_' + str(k)).a.span.value.text
-						
-						if journal_ISSN not in list(journals_cit.index):
-							ID_J_CIT = journal_ISSN
-							journals_cit.loc[ID_J_CIT] = [journal_title, 0, 0]
-							journalTarget_id = ID_J_CIT
-						else:
-							journalTarget_id = journal_ISSN
-
-
-						if article_WOS not in list(articles_cit.index):
-							ID_A_CIT = article_WOS
-							articles_cit.loc[ID_A_CIT] = [article_title, journal_id, int(year), 0, 0]
-							articleTarget_id = ID_A_CIT
-						else:
-							articleTarget_id = article_WOS
-
-						articleSource_WOS = articles.ID_WOS[articleSource_id]
-						journalSource_ISSN = journals.ISSN[journalSource_id]
-
-						citations.loc[ID_CIT] = [articleSource_WOS, journalSource_ISSN, articleTarget_id, journalTarget_id, year]
-						ID_CIT = ID_CIT + 1
-
-						articles_cit.CITED_IN[articleTarget_id] = articles_cit.CITED_IN[articleTarget_id] + 1
-						articles_cit.CITED_OUT[articleSource_WOS] = articles_cit.CITED_OUT[articleSource_WOS] + 1
-
-						journals_cit.TOT_DEGREE[journalTarget_id] = journals_cit.TOT_DEGREE[journalTarget_id] + 1
-
-				arrow = soup.find('a', class_ = 'paginationNext')['href']
-				if arrow != 'javascript: void(0)': driver.get(arrow)
-
+		if l + pages + 1 > limit: 
+			l = limit
+			articleSource_id = articleSource_id - 1
 			break
+
+		for page in range(1, pages+1):
+			soup = BeautifulSoup(driver.page_source, 'lxml')
+
+			all_div = soup.find_all('input', {'name': 'marked_list_candidates'})
+			base=[]
+			for div in all_div:
+				base.append(int(div['value']))
+			y = len(soup.find_all('div', class_='search-results-item'))
+			out_base=list(set(range(1+(page-1)*30,y+1+(page-1)*30))-set(base))
+
+			all_div = soup.find_all('div', class_ = 'search-results-item')
+			
+			for i in base:
+				div = all_div[i-(30*(page-1))-1]
+				k = k + 1
+				article_title = div.find('a', class_ = 'smallV110')
+
+				# apenas artigos dentro da base do WOS
+				if article_title.span == None:
+
+					# artigo fora da base
+					year = div.find_all('span', class_ = 'data_bold')[-1].value.text
+					if not(year.isnumeric()): continue
+					article_title = 'FORA DA BASE'
+					journal_title = div.find('span', id='source_title_' + str(i))
+					count = count + 1
+					articleTarget_WOS = article_title
+					journalTarget_ISSN = str(journal_title)
+
+
+				else:
+
+					journal_ISSN = div.find('p', class_ = 'FR_field sameLine')
+					if journal_ISSN == None: continue
+
+					journalTarget_ISSN = journal_ISSN.value.text
+					articleTarget_WOS = 'WOS:' + article_title['href'].split('WOS:')[-1].split('&')[0]
+					article_title = article_title.span.value.text
+					year = int(div.find_all('span', class_ = 'data_bold')[-1].value.text[-4:]) 
+				
+					if div.find('span', id = 'show_journal_overlay_link_' + str(i)) == None: continue
+					journal_title = div.find('span', id = 'show_journal_overlay_link_' + str(i)).a.span.value.text
+				
+				if journalTarget_ISSN not in list(journals_cit.index):
+					# novo journal
+					journals_cit.loc[journalTarget_ISSN] = [journal_title, 0, 0, 0] 
+
+				if articleTarget_WOS  not in list(articles_cit.index):
+					# novo artigo
+					articles_cit.loc[articleTarget_WOS] = [article_title, 0, year, 0, 0, 0, 0]
+
+				articleSource_WOS = articles.ID_WOS[articleSource_id]
+				journalSource_ISSN = journals.ISSN[journalSource_id]
+
+				citations.loc[ID_CIT] = [articleSource_WOS, journalSource_ISSN, articleTarget_WOS, journalTarget_ISSN, year]
+				print('ID_CIT = ' + str(ID_CIT))
+				ID_CIT = ID_CIT + 1
+
+				articles_cit.CITED_IN[articleTarget_WOS] = articles_cit.CITED_IN[articleTarget_WOS] + 1
+				articles_cit.CITED_OUT[articleSource_WOS] = articles_cit.CITED_OUT[articleSource_WOS] + 1
+
+				journals_cit.CITED_IN[journalTarget_ISSN] = journals_cit.CITED_IN[journalTarget_ISSN] + 1
+				journals_cit.CITED_OUT[journalSource_ISSN] = journals_cit.CITED_OUT[journalSource_ISSN] + 1
+			
+			all_div = soup.find_all('div', class_ = 'search-results-item')
+
+			# apenas artigos fora da base
+			for i in out_base:
+				div = all_div[i-(30*(page-1))-1]
+				k = k + 1
+
+				x = div.find('span', class_='reference-title')
+				if x == None: continue # tenxto indefinido
+
+				article_title = 'FORA DA BASE'
+				articleTarget_WOS = article_title
+				journal_title = x.findNextSiblings('div')
+				if journal_title == [] or len(journal_title)==1 or journal_title[1].value == None: continue
+				journal_title = journal_title[1].value.text
+				journalTarget_ISSN = str(journal_title)
+
+				year =  x.findNextSiblings('div')[1].find_all('span', class_ = 'data_bold')
+				if year == [] or year[-1].value == None: continue
+				year = year[-1].value.text
+				if not(year.isnumeric()): continue
+
+				count = count + 1
+				
+				if journalTarget_ISSN not in list(journals_cit.index):
+					# novo journal
+					journals_cit.loc[journalTarget_ISSN] = [journal_title, 0, 0, 0] 
+
+				if articleTarget_WOS  not in list(articles_cit.index):
+					# novo artigo
+					articles_cit.loc[articleTarget_WOS] = [article_title, 0, int(year), 0, 0, 0, 0]
+
+				articleSource_WOS = articles.ID_WOS[articleSource_id]
+				journalSource_ISSN = journals.ISSN[journalSource_id]
+
+				citations.loc[ID_CIT] = [articleSource_WOS, journalSource_ISSN, articleTarget_WOS, journalTarget_ISSN, year]
+				print('ID_CIT = ' + str(ID_CIT) + ' - FORA DA BASE')
+				ID_CIT = ID_CIT + 1
+
+				articles_cit.CITED_IN[articleTarget_WOS] = articles_cit.CITED_IN[articleTarget_WOS] + 1
+				articles_cit.CITED_OUT[articleSource_WOS] = articles_cit.CITED_OUT[articleSource_WOS] + 1
+
+				journals_cit.CITED_IN[journalTarget_ISSN] = journals_cit.CITED_IN[journalTarget_ISSN] + 1
+				journals_cit.CITED_OUT[journalSource_ISSN] = journals_cit.CITED_OUT[journalSource_ISSN] + 1
+
+
+			arrow = soup.find('a', class_ = 'paginationNext')['href']
+			if arrow != 'javascript: void(0)': driver.get(arrow)
+
+			#journals_cit.TOT_ART[journalSource_ISSN] = journals_cit.TOT_ART[journalSource_ISSN] + 1
+
+		articles_cit.CITED_OUT_OB[articleSource_WOS] = count
+		articles_cit.CITED_OUT_T[articleSource_WOS] = cit_total
+
 		l = l + pages + 1
 		journals_cit.TOT_ART[journalSource_ISSN] = journals_cit.TOT_ART[journalSource_ISSN] + 1
+		print(str(l) + ' limite')
 
-		articles_cit.to_csv('outputs/articles_cit_ID_J_%s.csv' % journalSource_id)
-		journals_cit.to_csv('outputs/journals_cit_ID_J_%s.csv' % journalSource_id)
-		citations.to_csv('outputs/citations_ID_J_%s.csv' % journalSource_id)
+		articles_cit.to_csv('outputs3/articles_cit_ID_J_%s.csv' % journalSource_id)
+		journals_cit.to_csv('outputs3/journals_cit_ID_J_%s.csv' % journalSource_id)
+		citations.to_csv('outputs3/citations_ID_J_%s.csv' % journalSource_id)
 
 	return articles_cit, journals_cit, citations, articleSource_id
