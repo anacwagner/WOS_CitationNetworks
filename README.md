@@ -42,3 +42,6 @@ Para utilizar o Selenium, é necessário de uma API [WebDriver](http://www.selen
 
 * Além disso, observou-se que como a busca envolve 59 periódicos, não tem como armazenar os resultados pela opção oferecida pelo próprio WoS, pois o limite é de 40 buscas. 
 
+## MATHEMATICAL & COMPUTATIONAL BIOLOGY
+
+[Mathematical and Computational Biology](http://jcr-incites-thomsonreuters.ez91.periodicos.capes.gov.br/JCRCategoryProfileAction.action?year=2016&categoryName=MATHEMATICAL%20%26%20COMPUTATIONAL%20BIOLOGY&edition=SCIE&category=MC) includes resources concerning the use of mathematical, statistical and computational methods to address data analysis, modeling, and information management in biological problems, processes and systems. Among the areas covered are biostatistics, bioinformatics, biometrics, modeling of biological systems, and computational biology.
