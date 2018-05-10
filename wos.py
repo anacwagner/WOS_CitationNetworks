@@ -404,8 +404,8 @@ def allCitations(articles, journals, ID_A_START, articles_cit, journals_cit, cit
 		journals_cit.TOT_ART[journalSource_ISSN] = journals_cit.TOT_ART[journalSource_ISSN] + 1
 		print(str(l) + ' limite')
 
-		articles_cit.to_csv('outputs3/articles_cit_ID_J_%s.csv' % journalSource_id)
-		journals_cit.to_csv('outputs3/journals_cit_ID_J_%s.csv' % journalSource_id)
-		citations.to_csv('outputs3/citations_ID_J_%s.csv' % journalSource_id)
+		articles_cit.to_csv('outputs/articles_cit_ID_J_%s.csv' % journalSource_id)
+		journals_cit.to_csv('outputs/journals_cit_ID_J_%s.csv' % journalSource_id)
+		citations.to_csv('outputs/citations_ID_J_%s.csv' % journalSource_id)
 
 	return articles_cit, journals_cit, citations, articleSource_id
