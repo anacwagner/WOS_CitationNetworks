@@ -6,7 +6,7 @@ Para cada periódico foram gerados três arquivos, por exemplo, para o periódic
 
 Nessa etapa, uma preocupação que surgiu foi como rodar os periódicos separados sem comprometer a integridade da base (lembrando que se o artigo e/ou periódico não corresponde a um do grupo de origem, ele deverá ser inserido - ou seja, o ID não pode ser um simples sequencial numérico). Dessa forma, tornou-se necessário o uso do número de registro do próprio WoS como o ID dos artigos e o ISSN como o ID dos periódicos.
 
-Ao final do processo, todas as citações foram concatenadas em [citations.csv](https://www.dropbox.com/s/v958ik5b2vpgdul/citations.csv?dl=0). As informações sobre os artigos e periódicos foram concatenadas e atualizadas (os resultados acumulados foram somados) em [articles_cit.csv]() e [journals_cit.csv](https://github.com/anacwagner/WOS_CitationNetworks/blob/master/outputs/journals_cit.csv).
+Ao final do processo, todas as citações foram concatenadas em [citations.csv](https://www.dropbox.com/s/nc990di3jeaa6jf/citations.csv?dl=0). As informações sobre os artigos e periódicos foram concatenadas e atualizadas (os resultados acumulados foram somados) em [articles_cit.csv](https://www.dropbox.com/s/kzl7ykd1drw46l2/articles_cit.csv?dl=0) e [journals_cit.csv](https://github.com/anacwagner/WOS_CitationNetworks/blob/master/outputs/journals_cit.csv).
 
 ## Observações
 
