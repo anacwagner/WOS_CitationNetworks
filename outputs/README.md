@@ -3,7 +3,7 @@
 
 ## *Journals*
 
-O `journals_cit`, possui informações sobre os periódicos utilizados na construção da rede de citações: 
+O [journals_cit](https://github.com/anacwagner/WOS_CitationNetworks/blob/master/outputs/journals_cit.csv), possui informações sobre os periódicos utilizados na construção da rede de citações: 
 
 * `ISSN` - ID do periódico;
 
@@ -20,7 +20,7 @@ O `journals_cit`, possui informações sobre os periódicos utilizados na constr
 
 ## Artigos
 
-O `articles_cit`, possui informações sobre os aartigos utilizados na construção da rede de citações: 
+O [articles_cit](https://www.dropbox.com/s/kzl7ykd1drw46l2/articles_cit.csv?dl=0), possui informações sobre os aartigos utilizados na construção da rede de citações: 
 
 * `ID_WOS` - ID do artigo;
 
@@ -43,7 +43,7 @@ O `articles_cit`, possui informações sobre os aartigos utilizados na construç
 
 ## Citações
 
-O data frame `citations` contém as informações da rede.
+O data frame [citations](https://www.dropbox.com/s/nc990di3jeaa6jf/citations.csv?dl=0) contém as informações da rede.
 
 * `SOURCE_A` - ID do artigo que está citando. Para os que estão na base, corresponde ao número de registro do artigo no WoS. Para os que estão fora da base, corresponde à identificação "FORA DA BASE";
 
