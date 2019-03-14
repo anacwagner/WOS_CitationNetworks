@@ -56,3 +56,21 @@ O data frame [citations](https://www.dropbox.com/s/nc990di3jeaa6jf/citations.csv
 * `YEAR` - ano da citação.
 
 ![](../Figuras/citations.png)
+
+No entanto, algumas alterações foram realizadas em sua estrtura de forma a ficar similar a que foi utilizada na simulação WW e ACW: `var_cit` (mais informações visitar o repositório [Citation_Networks](https://github.com/anacwagner/Citation_Networks). Além disso, só está sendo considerado os artigos que estão na base (os artigos identificados como "FORA DA BASE" foram descartados, mas suas respectivas identificações numéricas foram mantidas). 
+
+O data frame [var_cit](https://www.dropbox.com/s/kdqle3l2ccpto4i/var_cit_1.csv?dl=0) possui a seguinte estrutura:
+
+* `SOURCE_A_ID` - agora, o ID do artigo possui um correspondente numérico sequêncial.
+
+* `SOURCE_A_YEAR` - ano de publicação do artigo que está citando. 
+
+* `SOURCE_J_ID` - agora, o ID do periódico possui um correspondente numérico sequêncial.
+
+* `TARGET_A_ID` - agora, o ID do artigo possui um correspondente numérico sequêncial.
+
+* `TARGET_A_YEAR` - ano de publicação do artigo que está sendo citado. 
+
+* `TARGET_J_ID` - agora, o ID do periódico possui um correspondente numérico sequêncial.
+
+![](../Figuras/var_cit.png)
